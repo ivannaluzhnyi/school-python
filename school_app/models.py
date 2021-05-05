@@ -4,19 +4,29 @@ from django.contrib.auth.models import User
 class Subject(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
-    classes = models.ManyToManyField(Class)
+
+    def __str__(self):
+        return self.name
 
 class Class(models.Model):
     name = models.CharField(max_length=200)
-    promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE)
     subjects = models.ManyToManyField(Subject)
+
+    def __str__(self):
+        return self.name
 
 class Promotion(models.Model):
     name = models.CharField(max_length=200)
-    classes = models.OneToManyField(Class)
+    classes = models.ForeignKey(Class, on_delete=models.CASCADE)
+    year = models.IntegerField()
+
+    def __str__(self):
+        return self.name
 
 class Note(models.Model):
-    note = models.IntegerField(max_length=11)
+    note = models.IntegerField()
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
-
+    def __str__(self):
+        return str(self.note)
