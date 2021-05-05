@@ -4,24 +4,45 @@ from django.shortcuts import (get_object_or_404,
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from ..models import Subject as SubjectModel
+from django.views import generic
+from django.contrib import messages
+from ..forms.subject_form import SubjectForm
 
 
 def get(request, id):
     subject = get_object_or_404(SubjectModel, id=id)
-    return HttpResponse(subject)
+    return render(request, 'subjects/index.html', {'subject': subject})
 
 
 def get_all(request):
     subjects = SubjectModel.objects.all()
-    return HttpResponse(subjects)
+    return render(request, 'subjects/index.html', {'subjects': subjects, "test": "tests"})
 
 
 @csrf_exempt
 def create(request):
-    data = request.POST.dict()
-    new_subject = SubjectModel.objects.create(**data)
-    id = new_subject.id
-    return redirect('subject_get', id)
+    print("create")
+    # data = request.POST.dict()
+    # new_subject = SubjectModel.objects.create(**data)
+
+    if request.method == 'POST':
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            data = request.POST.dict()
+            form.save()
+            messages.success(request, "La matière {} à été créée.".format(data['name']))
+        else:
+            messages.error(
+                request, 'There are errors in the form please check')
+    else:
+
+        form = SubjectForm()
+
+    context = {
+        'form': form
+    }
+    print(context)
+    return render(request, 'subjects/create.html', context)
 
 
 @csrf_exempt
