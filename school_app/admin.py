@@ -10,8 +10,15 @@ class SubjectAdmin(admin.ModelAdmin):
 class NoteAdmin(admin.ModelAdmin):
     list_display = ('note', 'subject', 'user')
 
+@admin.display(description='nb_eleves')
+def count_students(obj):
+    print(obj.user.all())
+    return ("%d" % len(obj.user.all()))
 
-admin.site.register(Class)
+class ClassAdmin(admin.ModelAdmin):
+    list_display = ("name", count_students)
+
+admin.site.register(Class, ClassAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Note, NoteAdmin)
 
