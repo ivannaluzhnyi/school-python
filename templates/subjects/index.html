@@ -27,8 +27,8 @@
       <td>{{subject.name}}</td>
       <td>{{subject.description}}</td>
       <td>
-        <a href="{% url 'subject_get' subject.id %}" class="btn btn-primary btn-sm" >Voir</a>
-        <a href="{% url 'suject_update_2' subject.id %}" class="btn btn-success btn-sm" >Modifier</a>
+        <a href="{% url 'subject_update' subject.id %}" class="btn btn-primary btn-sm" >Modifier</a>
+        {% comment %} <a href="{% url 'subject_update' subject.id %}" class="btn btn-success btn-sm" >Modifier</a> {% endcomment %}
         <a href="{% url 'subject_delete' subject.id %}" class="btn btn-danger btn-sm" >Supprimer</a>
         </td>
     </tr>
