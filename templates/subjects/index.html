@@ -1,13 +1,23 @@
-{% extends '_base.html' %}
-{% load static %}
-{% block content %}
-
+{% extends '_base.html' %} {% load static %} {% block content %}
 {% if subjects %}
-    {% for subject  in subjects %}
-        <br>{{subject }}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for subject in subjects %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{subject.name}}</td>
+      <td>{{subject.description}}</td>
+    </tr>
     {% endfor %}
+  </tbody>
+</table>
 {% else %}
-    <p>Y'a pas de matière.</p>
-{% endif %}
-{% endblock content %}
-
+<p>Y'a pas de matière.</p>
+{% endif %} {% endblock content %}
