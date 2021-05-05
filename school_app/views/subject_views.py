@@ -20,7 +20,7 @@ def get_all(request):
     return render(request, 'subjects/index.html', {'subjects': subjects})
 
 
-@csrf_exempt
+
 def create(request):
 
     if request.method == 'POST':
@@ -54,10 +54,8 @@ class SubjectUpdate(UpdateView):
  fields = ['name','description']
  success_url ="/school/subject"
  template_name = 'subjects/subject_form.html'
- success_message = " was created successfully"
 
 
-@csrf_exempt
 def delete(request, id):
     SubjectModel.objects.filter(pk=id).delete()
     messages.success(request, "La matière à bien été surprimée.")
