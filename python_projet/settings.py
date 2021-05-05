@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'school_app.apps.SchoolAppConfig',
     'bootstrap4',
     'crispy_forms',
+    'helpers',
 ]
 
 MIDDLEWARE = [
