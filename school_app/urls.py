@@ -13,11 +13,12 @@ urlpatterns = [
     path('subject', subject_views.get_all, name='subject_get_all'),
     path('subject/<int:id>', subject_views.get, name='subject_get'),
     path('subject/create/', subject_views.create, name='subject_create'),
-    path('subject/update/<int:id>', subject_views.update, name='subject_update'),
+    #path('subject/update/<int:id>', subject_views.update, name='subject_update'),
     path('subject/delete/<int:id>', subject_views.delete, name='subject_delete'),
+    path('subject/update/<pk>', subject_views.SubjectUpdate.as_view(), name='suject_update_2'),
 
     # Class
-    path('class', class_views.get_all, name='subject_get_all'),
+    path('class', class_views.get_all, name='class_get_all'),
     path('class/<int:id>', class_views.get, name='class_get'),
     path('class/create', class_views.create, name='class_create'),
     path('class/update/<int:id>', class_views.update, name='class_update'),
