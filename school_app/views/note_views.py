@@ -3,7 +3,9 @@ from django.shortcuts import (get_object_or_404,
                               redirect)
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.contrib import messages
 from ..models import Note as NoteModel
+from ..forms.note_form import NoteForm
 
 def get(request, id):
     _note = get_object_or_404(NoteModel, id=id)
@@ -11,7 +13,7 @@ def get(request, id):
 
 
 def get_all(request):
-    _notes = NoteModel.objects.all()
+    _notes = NoteModel.objects.all().order_by('id')
     user = request.user
     groups = list()
     for g in user.groups.all():
@@ -26,20 +28,33 @@ def get_all(request):
 
 @csrf_exempt
 def create(request):
-    data = request.POST.dict()
-    new_note = NoteModel.objects.create(**data)
-    id = new_note.id
-    return redirect('note_get', id)
+    return HttpResponse(request)
+
+
+def update_view(request, note_id):
+    _note = NoteModel.objects.get(pk=note_id)
+    if request.method == 'POST':
+        form = NoteForm(request.POST, instance=_note)
+        if form.is_valid():
+            data = request.POST.dict()
+            form.save()
+            messages.success(
+                request, "La note {} à bien été modifiée".format(data['note']))
+        else:
+            messages.error(
+                request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
+    else:
+        form = NoteForm(instance=_note)
+    return render(request, 'pages/notes/manage.html', {
+        'form': form,
+        'mode': "U"
+    })
+
+
 
 
 @csrf_exempt
-def update(request, id):
-    data = request.POST.dict()
-    NoteModel.objects.filter(pk=id).update(**data)
-    return redirect('note_get', id)
-
-
-@csrf_exempt
-def delete(request, id):
-    NoteModel.objects.filter(pk=id).delete()
-    return redirect('note_get_all')
+def delete(request, note_id):
+    NoteModel.objects.filter(pk=note_id).delete()
+    messages.success(request, "La note à bien été surprimée.")
+    return redirect('index_notes')

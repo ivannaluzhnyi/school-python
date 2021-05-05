@@ -2,7 +2,7 @@
 
 {% block title %}Voir les notes{% endblock title %}
 {% block header %}
-<button type="button" class="btn btn-primary">Retour</button>
+<a href="{% url 'index' %}" class="btn btn-primary">Retour</a>
 {% endblock %}
 {% block content %}
 <table class="table">
@@ -12,7 +12,7 @@
             <th scope="col">Note</th>
             <th scope="col">Coeff</th>
             {% if role == 'manager' %}
-            <th scope="col3">Actions</th>
+            <th scope="col2">Actions</th>
             {% endif %}
         </tr>
     </thead>
@@ -24,8 +24,8 @@
             <td>3</td>
             {% if role == 'manager' %}
             <td>
-                <button class="btn btn-success">Editer</button>
-                <button class="btn btn-danger">Supprimer</button>
+                <a href="{% url 'update_note' note_id=note.id %}" class="btn btn-success">Editer</a>
+                <a href="{% url 'delete_note' note_id=note.id %}" class="btn btn-danger">Supprimer</a>
             </td>
             {% endif %}
         </tr>
