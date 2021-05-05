@@ -3,7 +3,10 @@ from django.shortcuts import (get_object_or_404,
                               redirect)
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+
 from ..models import Class as ClassModel
+from django.contrib import messages
+from ..forms.class_form import ClassForm
 
 
 def get(request, id):
@@ -18,10 +21,25 @@ def get_all(request):
 
 @csrf_exempt
 def create(request):
-    data = request.POST.dict()
-    new_class = ClassModel.objects.create(**data)
-    id = new_class.id
-    return redirect('class_get', id)
+
+    if request.method == 'POST':
+        form = ClassForm(request.POST)
+        if form.is_valid():
+            data = request.POST.dict()
+            form.save()
+            messages.success(
+                request, "La class {} à été créée.".format(data['name']))
+        else:
+            messages.error(
+                request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
+    else:
+
+        form = ClassForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'class/create.html', context)
 
 
 @csrf_exempt

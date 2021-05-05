@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'school_app.apps.SchoolAppConfig',
     'bootstrap4',
     'crispy_forms',
+    'helpers',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/school/'
+
+
+# HELPER_DIR = os.path.join(BASE_DIR, 'helpers')
