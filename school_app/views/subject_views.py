@@ -21,9 +21,6 @@ def get_all(request):
 
 @csrf_exempt
 def create(request):
-    print("create")
-    # data = request.POST.dict()
-    # new_subject = SubjectModel.objects.create(**data)
 
     if request.method == 'POST':
         form = SubjectForm(request.POST)
@@ -41,7 +38,6 @@ def create(request):
     context = {
         'form': form
     }
-    print(context)
     return render(request, 'subjects/create.html', context)
 
 

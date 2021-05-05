@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from . import views
-from .views import index_views, subject_views
+from .views import index_views, subject_views, class_views
 
 urlpatterns = [
     path('', index_views.index, name='index'),
@@ -17,5 +17,10 @@ urlpatterns = [
     path('subject/update/<int:id>', subject_views.update, name='subject_update'),
     path('subject/delete/<int:id>', subject_views.delete, name='subject_delete'),
 
-    # path('home1/', subject_views.SubjectListView.as_view(), name='suject_list'),
+    # Class
+    path('class', class_views.get_all, name='subject_get_all'),
+    path('class/<int:id>', class_views.get, name='class_get'),
+    path('class/create', class_views.create, name='class_create'),
+    path('class/update/<int:id>', class_views.update, name='class_update'),
+    path('class/delete/<int:id>', class_views.delete, name='class_delete'),
 ]
