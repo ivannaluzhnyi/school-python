@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'school_app.apps.SchoolAppConfig'
+    'school_app.apps.SchoolAppConfig',
+    'bootstrap4',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -55,13 +57,13 @@ ROOT_URLCONF = 'python_projet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'school_app/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'school_app/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                #'class.context_processors.auth',
+                # 'class.context_processors.auth',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
