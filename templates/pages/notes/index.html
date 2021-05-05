@@ -1,7 +1,36 @@
 {% extends '_base.html' %}
 
-{% block title %}Home page{% endblock title %}
-
+{% block title %}Voir les notes{% endblock title %}
+{% block header %}
+<button type="button" class="btn btn-primary">Retour</button>
+{% endblock %}
 {% block content %}
-<p>Vous êtes sur la page pour checkez vos notes</p>
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Matière</th>
+            <th scope="col">Note</th>
+            <th scope="col">Coeff</th>
+            {% if role == 'manager' %}
+            <th scope="col3">Actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for note in notes %}
+        <tr>
+            <th>{{note.subject}}</th>
+            <td>{{note.note}}</td>
+            <td>3</td>
+            {% if role == 'manager' %}
+            <td>
+                <button class="btn btn-success">Editer</button>
+                <button class="btn btn-danger">Supprimer</button>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
 {% endblock content %}
