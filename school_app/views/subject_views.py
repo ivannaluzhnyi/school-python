@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from ..models import Subject as SubjectModel
 from django.contrib import messages
 from ..forms.subject_form import SubjectForm
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 
 def get(request, id):
@@ -15,10 +16,10 @@ def get(request, id):
 
 def get_all(request):
     subjects = SubjectModel.objects.all()
-    return render(request, 'subjects/index.html', {'subjects': subjects, "test": "tests"})
+    return render(request, 'subjects/index.html', {'subjects': subjects})
 
 
-@csrf_exempt
+
 def create(request):
 
     if request.method == 'POST':
@@ -48,7 +49,14 @@ def update(request, id):
     return redirect('subject_get', id)
 
 
-@csrf_exempt
+class SubjectUpdate(UpdateView):
+ model = SubjectModel
+ fields = ['name','description']
+ success_url ="/school/subject"
+ template_name = 'subjects/subject_form.html'
+
+
 def delete(request, id):
     SubjectModel.objects.filter(pk=id).delete()
+    messages.success(request, "La matière à bien été surprimée.")
     return redirect('subject_get_all')
