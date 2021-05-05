@@ -11,13 +11,7 @@ class Subject(models.Model):
 class Class(models.Model):
     name = models.CharField(max_length=200)
     subjects = models.ManyToManyField(Subject)
-
-    def __str__(self):
-        return self.name
-
-class Promotion(models.Model):
-    name = models.CharField(max_length=200)
-    classes = models.ForeignKey(Class, on_delete=models.CASCADE)
+    user = models.ManyToManyField(User)
     year = models.IntegerField()
 
     def __str__(self):
