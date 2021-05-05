@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from . import views
-from .views import SignUpView
+from .views import SignUpView, HomePageView
 
 urlpatterns = [
     path('', views.index, name='index'),
