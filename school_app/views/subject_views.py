@@ -15,9 +15,8 @@ def get(request, id):
 
 
 def get_all(request):
-    subjects = SubjectModel.objects.all()
+    subjects = SubjectModel.objects.all().order_by('id')
     return render(request, 'subjects/index.html', {'subjects': subjects})
-
 
 
 def create(request):
@@ -37,23 +36,33 @@ def create(request):
         form = SubjectForm()
 
     context = {
-        'form': form
+        'form': form,
+        'title': "Créer une matière"
     }
-    return render(request, 'subjects/create.html', context)
+    return render(request, 'subjects/form.html', context)
 
 
 @csrf_exempt
 def update(request, id):
-    data = request.POST.dict()
-    SubjectModel.objects.filter(pk=id).update(**data)
-    return redirect('subject_get', id)
+    subject = get_object_or_404(SubjectModel, id=id)
+    if request.method == 'POST':
+        form = SubjectForm(request.POST, instance=subject)
+        if form.is_valid():
+            data = request.POST.dict()
+            form.save()
+            messages.success(
+                request, "La matière {} à été créée.".format(data['name']))
+        else:
+            messages.error(
+                request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
+    else:
+        form = SubjectForm(instance=subject)
 
-
-class SubjectUpdate(UpdateView):
- model = SubjectModel
- fields = ['name','description']
- success_url ="/school/subject"
- template_name = 'subjects/subject_form.html'
+    context = {
+        'form': form,
+        'title': "Mettre à jour une matière"
+    }
+    return render(request, 'subjects/form.html', context)
 
 
 def delete(request, id):

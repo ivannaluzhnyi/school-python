@@ -2,10 +2,9 @@
 {% extends '_base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %} Création d'une matière {% endblock %}
 
 {% block content %}
-    <h2>Créer une matière</h2>
+    <h2>{{title}}</h2>
        {% if messages %}
             <div class="messages m-3">
                 {% for message in messages %}
