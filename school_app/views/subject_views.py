@@ -4,7 +4,6 @@ from django.shortcuts import (get_object_or_404,
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from ..models import Subject as SubjectModel
-from django.views import generic
 from django.contrib import messages
 from ..forms.subject_form import SubjectForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -28,10 +27,11 @@ def create(request):
         if form.is_valid():
             data = request.POST.dict()
             form.save()
-            messages.success(request, "La matière {} à été créée.".format(data['name']))
+            messages.success(
+                request, "La matière {} à été créée.".format(data['name']))
         else:
             messages.error(
-                request, 'There are errors in the form please check')
+                request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
     else:
 
         form = SubjectForm()

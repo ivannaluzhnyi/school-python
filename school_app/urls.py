@@ -1,14 +1,13 @@
 from django.urls import path, include
 
 from . import views
-from .views import index_views, subject_views, class_views
+from .views import index_views, subject_views, class_views, note_views
 
 urlpatterns = [
-    path('', index_views.index, name='index'),
+    path('', index_views.HomePageView.as_view(), name='index'),
     path('test/', index_views.test, name="test"),
     path('accounts/', include('django.contrib.auth.urls'),),
     path('accounts/signup', index_views.SignUpView.as_view(), name='signup'),
-    path('home/', index_views.HomePageView.as_view(), name='home'),
 
     # Subject
     path('subject', subject_views.get_all, name='subject_get_all'),
@@ -24,4 +23,7 @@ urlpatterns = [
     path('class/create', class_views.create, name='class_create'),
     path('class/update/<int:id>', class_views.update, name='class_update'),
     path('class/delete/<int:id>', class_views.delete, name='class_delete'),
+
+    # Notes
+    path('notes', note_views.get_all, name="index_notes")
 ]
