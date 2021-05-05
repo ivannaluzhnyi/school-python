@@ -1,11 +1,23 @@
 {% extends '_base.html' %} {% load static %} {% block content %}
 {% if subjects %}
+<h1>Listes des matières ({{ subjects|length }}) <a href="{% url 'subject_create' %}" class="btn btn-success" >Créer</a></h1>
+
+{% if messages %}
+            <div class="messages m-3">
+                {% for message in messages %}
+                <div class="alert alert-success">
+                    <div {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 <table class="table">
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Nom</th>
+      <th scope="col">Matière</th>
       <th scope="col">Description</th>
+      <th scope="col4">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -14,6 +26,11 @@
       <th scope="row">{{ forloop.counter }}</th>
       <td>{{subject.name}}</td>
       <td>{{subject.description}}</td>
+      <td>
+        <a href="{% url 'subject_get' subject.id %}" class="btn btn-primary btn-sm" >Voir</a>
+        <a href="{% url 'suject_update_2' subject.id %}" class="btn btn-success btn-sm" >Modifier</a>
+        <a href="{% url 'subject_delete' subject.id %}" class="btn btn-danger btn-sm" >Supprimer</a>
+        </td>
     </tr>
     {% endfor %}
   </tbody>
