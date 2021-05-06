@@ -1,13 +1,47 @@
-{% extends '_base.html' %}
-{% load static %}
-{% block content %}
-
+{% extends '_base.html' %} {% load static %} {% block content %}
+{% load poll_extra %}
+<h1>Listes des matières ({{ subjects|length }}) <a href="{% url 'subject_create' %}" class="btn btn-success">Créer</a>
+</h1>
 {% if subjects %}
-    {% for subject  in subjects %}
-        <br>{{subject }}
-    {% endfor %}
-{% else %}
-    <p>Y'a pas de matière.</p>
+{% if messages %}
+<div class="messages m-3">
+  {% for message in messages %}
+  <div class="alert alert-success">
+    <div {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </div>
+  </div>
+  {% endfor %}
+</div>
 {% endif %}
-{% endblock content %}
-
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Matière</th>
+      <th scope="col">Description</th>
+      <th scope="col">Professeur</th>
+      <th scope="col4">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for subject in subjects %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{subject.name}}</td>
+      <td>{{subject.description}}</td>
+      <td> {{ subject.user}}</td>
+      <td>
+        {% if request.user|has_group:"coordinator" %}
+        <a href="{% url 'subject_update' subject.id %}" class="btn btn-primary btn-sm">Modifier</a>
+        <a href="{% url 'subject_delete' subject.id %}" class="btn btn-danger btn-sm">Supprimer</a>
+        {% elif request.user|has_group:"professor" %}
+        <a href="{% url 'class_get_filters' subject.id %}" class="btn btn-primary btn-sm">Voir</a>
+        {% else %}
+        {% endif%}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Il n'y a pas encore de matière.</p>
+{% endif %} {% endblock content %}

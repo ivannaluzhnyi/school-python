@@ -1,0 +1,27 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<h2>{{title}}</h2>
+{% if messages %}
+<div class="messages m-3">
+    {% for message in messages %}
+    <div
+        class="alert  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}: alert-danger {% else %} alert-success {%  endif %} ">
+        <div {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <br />
+    <button class="btn btn-success" type="submit">Sauvegarder</button>
+    <a href="{% url 'subject_get_all' %}" class="btn btn-primary">Retour</a>
+</form>
+{% endblock content %}

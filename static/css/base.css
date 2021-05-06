@@ -22,3 +22,7 @@ body {
 
 .footer {
 }
+
+a:hover {
+    text-decoration: none !important;
+}

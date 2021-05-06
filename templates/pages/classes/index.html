@@ -1,0 +1,53 @@
+{% extends '_base.html' %}
+{% load poll_extra %}
+{% block title %}Voir les promos{% endblock title %}
+{% block header %}
+<a href="{% url 'index' %}" class="btn btn-primary">Retour</a>
+{% endblock %}
+{% block content %}
+
+<div class="messages m-3">
+    {% for message in messages %}
+    <div
+        class="alert  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}: alert-danger {% else %} alert-success {%  endif %} ">
+        <div {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<h1>Listes des promos ({{ classes|length }})
+    {% if request.user|has_group:"coordinator" %}
+    <a href="{% url 'class_create' %}" class="btn btn-success">Créer</a>
+    {%endif%}
+</h1>
+
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Classe</th>
+            <th scope="col">Année</th>
+            <th scope="col2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for class in classes %}
+        <tr>
+            <th>{{class.name}}</th>
+            <td>{{class.year}}</td>
+            {% if request.user|has_group:"coordinator" %}
+            <td>
+                <a href="{% url 'class_get' id=class.id %}" class="btn btn-info">Voir</a>
+                <a href="{% url 'class_update' id=class.id %}" class="btn btn-success">Editer</a>
+                <a href="{% url 'class_delete' id=class.id %}" class="btn btn-danger">Supprimer</a>
+            </td>
+            {% else %}
+            <td><a href="{% url 'class_get' id=class.id %}" class="btn btn-info">Voir</a></td>
+            {% endif%}
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+{% endblock content %}

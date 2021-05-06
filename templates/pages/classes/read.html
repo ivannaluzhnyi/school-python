@@ -1,0 +1,82 @@
+{% extends '_base.html' %}
+{% load poll_extra %}
+
+{% block title %}Voir ma promotion{% endblock title %}
+{% block header %}
+<a href="{% url 'class_get_all' %}" class="btn btn-primary">Retour</a>
+{% endblock %}
+{% block content %}
+
+{% if class %}
+
+<div>
+    <h2>
+        {{class.name}}
+        <h2>
+            <div class="container" style="margin-top: 10%">
+                <div class="row justify-content-between">
+                    <div>
+                        <h4> Matières ({{ class.subject.all|length }}) </h4>
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for subject in class.subject.all %}
+                                <tr>
+                                    <th>{{subject.name}}</th>
+                                    <td>{{subject.description}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h4> Eleves ({{ class.user.all|length }}) </h4>
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Email</th>
+                                    {% if request.user|has_group:"professor" %}
+                                    <th scope="col">Actions</th>
+                                    {% endif %}
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in class.user.all %}
+                                <tr>
+                                    <th>{{user.username}}</th>
+                                    <th>{{user.first_name}} {{user.last_name}}</th>
+                                    <th>{{user.email}}</th>
+                                    {% if request.user|has_group:"professor" %}
+                                    <th>
+                                        <a href="{% url 'create_note' %}" class="btn btn-success">Ajouter une note</a>
+                                    </th>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+</div>
+</div>
+<br />
+{% if document %}
+<div>
+    <h5> Document à télécharger </h5>
+    <a href="{% url 'class_doc_download' file_path=document  %}" class="btn btn-primary btn-sm"> {{filename}} </a>
+</div>
+{% endif%}
+</div>
+
+
+{% endif%}
+{% endblock content %}
