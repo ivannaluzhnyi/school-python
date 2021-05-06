@@ -51,7 +51,7 @@ def get_all_filter_by_subject(request, id):
 def create(request):
 
     if request.method == 'POST':
-        form = ClassForm(request.POST, request.FILES)
+        form = ClassForm(request.POST, files=request.FILES)
         if form.is_valid():
             data = request.POST.dict()
             form.save()
