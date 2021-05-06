@@ -9,8 +9,8 @@ from helpers import form_validator
 def upload_path_handler(instance, filename):
     import os.path
     fn, ext = os.path.splitext(filename)
-    return 'documents/classes%Y/%m/%d'
-    # return "documents/classes/{id}{ext}".format(id=instance.pk, ext=ext)
+
+    return "documents/classes/c-{id}/{ext}".format(id=instance.pk, ext=filename)
 
 
 class Subject(models.Model):

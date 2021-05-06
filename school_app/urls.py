@@ -24,6 +24,7 @@ urlpatterns = [
     path('class/create', class_views.create, name='class_create'),
     path('class/update/<int:id>', class_views.update, name='class_update'),
     path('class/delete/<int:id>', class_views.delete, name='class_delete'),
+    path('class/doc/<str:file_path>', class_views.doc_download, name='class_doc_download'),
 
     # Notes
     path('notes', note_views.get_all, name="index_notes"),

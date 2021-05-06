@@ -2,16 +2,22 @@ from django.shortcuts import (get_object_or_404,
                               render,
                               redirect)
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse, HttpResponseNotFound
 
 from ..models import Class as ClassModel
 from django.contrib import messages
 from ..forms.class_form import ClassForm
 
+from django.core.files.storage import FileSystemStorage
+
+from helpers import download_file
+
 
 def get(request, id):
     _class = get_object_or_404(ClassModel, id=id)
-    return render(request, "pages/classes/read.html", {"class": _class})
+    _file = download_file.encode_path(_class.doc)
+    filename = download_file.get_filename(_class.doc, "/")
+    return render(request, "pages/classes/read.html", {"class": _class, "document": _file, "filename": filename})
 
 
 def get_all(request):
@@ -31,7 +37,6 @@ def get_all(request):
     return render(request, "pages/classes/index.html", {"classes": _classes, "role": role})
 
 
-@csrf_exempt
 def create(request):
 
     if request.method == 'POST':
@@ -55,13 +60,8 @@ def create(request):
     return render(request, 'pages/classes/manage.html', context)
 
 
-@csrf_exempt
 def update(request, id):
     _class = ClassModel.objects.get(pk=id)
-
-    print('-------------------------')
-
-    print(request.FILES)
 
     if request.method == 'POST':
         form = ClassForm(request.POST, files=request.FILES, instance=_class)
@@ -80,6 +80,22 @@ def update(request, id):
         'mode': "U",
         "title": "Mettre à jour une classe"
     })
+
+
+def doc_download(request, file_path):
+
+    fs = FileSystemStorage()
+    next_path = "/code/media/" + download_file.decode_path(file_path)
+    filename = download_file.get_filename(file_path)
+
+    if fs.exists(next_path):
+        with fs.open(next_path) as pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="{}"'.format(
+                filename)
+            return response
+    else:
+        return HttpResponseNotFound('The requested pdf was not found in our server.')
 
 
 @csrf_exempt
