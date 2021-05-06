@@ -4,7 +4,6 @@ from django.shortcuts import (get_object_or_404,
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from ..models import Subject as SubjectModel
-from ..models import Subject as SubjectModel
 from django.contrib import messages
 from ..forms.subject_form import SubjectForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -14,8 +13,8 @@ def get(request, id):
     subject = get_object_or_404(SubjectModel, id=id)
     return render(request, 'subjects/index.html', {'subject': subject})
 
-# @login_required
-# @permission_required('school_app.subject.Canviewsubject', raise_exception=True)
+@login_required
+@permission_required('school_app.Canviewsubject', raise_exception=True)
 def get_all(request):
     # print(request.user.is_authenticated())
     # print(request.user.user_permissions.all())

@@ -24,12 +24,25 @@ def get_all(request):
     role = "manager"
     return render(request, "pages/notes/index.html", { "notes": _notes, "role": role })
 
-
-
-@csrf_exempt
 def create(request):
-    return HttpResponse(request)
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            data = request.POST.dict()
+            note = form.save()
+            messages.success(
+                request, "La note {} à bien été créée pour l'utilisateur {}".format(data['note'], note.user.username))
+        else:
+            messages.error(
+                request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
+    else:
 
+        form = NoteForm()
+
+    return render(request, 'pages/notes/manage.html', {
+        'form': form,
+        'mode': 'C'
+    })
 
 def update_view(request, note_id):
     _note = NoteModel.objects.get(pk=note_id)
@@ -39,7 +52,7 @@ def update_view(request, note_id):
             data = request.POST.dict()
             form.save()
             messages.success(
-                request, "La note {} à bien été modifiée".format(data['note']))
+                request, "La note {} à bien été modifiée".format(data['id']))
         else:
             messages.error(
                 request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
@@ -50,10 +63,6 @@ def update_view(request, note_id):
         'mode': "U"
     })
 
-
-
-
-@csrf_exempt
 def delete(request, note_id):
     NoteModel.objects.filter(pk=note_id).delete()
     messages.success(request, "La note à bien été surprimée.")
