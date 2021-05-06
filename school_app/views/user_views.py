@@ -100,9 +100,9 @@ def update_view(request, user_id):
         form = UserUpdateForm(request.POST, instance=_user)
         if form.is_valid():
             data = request.POST.dict()
-            note = form.save()
+            user = form.save()
             messages.success(
-                request, "L'utilisateur {} à bien été modifié {}".format(data['username']))
+                request, "L'utilisateur {} à bien été modifié".format(user.username))
         else:
             messages.error(
                 request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
