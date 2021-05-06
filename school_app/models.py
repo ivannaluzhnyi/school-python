@@ -21,7 +21,12 @@ class Class(models.Model):
     year = models.IntegerField(validators=[form_validator.validate_year_class])
 
     def __str__(self):
-        return self.name
+        # print("------------------------------")
+
+        return "%s (%s)" % (
+            self.name,
+            ", ".join(sb.name for sb in self.subject.all()),
+        )
 
 
 class Note(models.Model):
