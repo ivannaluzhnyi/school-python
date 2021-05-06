@@ -12,7 +12,6 @@
 
 
 
-
 {% if class %}
 
 <div>
@@ -73,6 +72,21 @@
 
         </div>
     </div>
+
+
+
+<br />
+
+    {% if document %}
+
+
+        <div>
+            <h5> Document à télécharger </h5>
+            <a href="{% url 'class_doc_download' file_path=document  %}" class="btn btn-primary btn-sm" > {{filename}} </a>
+        </div>
+
+    {% endif%}
+
 
 
 
