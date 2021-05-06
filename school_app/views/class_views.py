@@ -11,7 +11,7 @@ from ..forms.class_form import ClassForm
 
 def get(request, id):
     _class = get_object_or_404(ClassModel, id=id)
-    return render(request, "class/read.html", {"class": _class})
+    return render(request, "pages/classes/read.html", {"class": _class})
 
 
 def get_all(request):
@@ -28,7 +28,7 @@ def get_all(request):
         role = "manager"
     role = "manager"
 
-    return render(request, "class/index.html", {"classes": _classes, "role": role})
+    return render(request, "pages/classes/index.html", {"classes": _classes, "role": role})
 
 
 @csrf_exempt
@@ -49,16 +49,32 @@ def create(request):
         form = ClassForm()
 
     context = {
-        'form': form
+        'form': form,
+        'title': "Créer une class"
     }
-    return render(request, 'class/create.html', context)
+    return render(request, 'pages/classes/manage.html', context)
 
 
 @csrf_exempt
 def update(request, id):
-    data = request.POST.dict()
-    ClassModel.objects.filter(pk=id).update(**data)
-    return redirect('class_get', id)
+    _class = ClassModel.objects.get(pk=id)
+    if request.method == 'POST':
+        form = ClassForm(request.POST)
+        if form.is_valid():
+            data = request.POST.dict()
+            form.save()
+            messages.success(
+                request, "La class {} à bien été modifiée".format(data['name']))
+        else:
+            messages.error(
+                request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
+    else:
+        form = ClassForm(instance=_class)
+    return render(request, 'pages/classes/manage.html', {
+        'form': form,
+        'mode': "U",
+        "title": "Mettre à jour une classe"
+    })
 
 
 @csrf_exempt
