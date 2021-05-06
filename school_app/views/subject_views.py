@@ -4,7 +4,6 @@ from django.shortcuts import (get_object_or_404,
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from ..models import Subject as SubjectModel
-from ..models import User as UserModel
 from django.contrib import messages
 from ..forms.subject_form import SubjectForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -19,10 +18,11 @@ def get(request, id):
 # @permission_required('school_app.subject.Canviewsubject', raise_exception=True)
 @login_required
 def get_all(request):
+    subjects = SubjectModel.objects.all().order_by('id')
     if request.user.groups.filter(name='cordinator'):
         subjects = SubjectModel.objects.all().order_by('id')
     elif request.user.groups.filter(name='professor'):
-        subjects = SubjectModel.objects.filter(user=2)
+        subjects = SubjectModel.objects.filter(user=request.user.id)
     return render(request, 'subjects/index.html', {'subjects': subjects})
 
 # @permission_required('polls.add_choice', raise_exception=True)
@@ -50,7 +50,6 @@ def create(request):
     return render(request, 'subjects/form.html', context)
 
 
-@csrf_exempt
 @login_required
 def update(request, id):
     subject = get_object_or_404(SubjectModel, id=id)

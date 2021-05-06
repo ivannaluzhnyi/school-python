@@ -16,7 +16,7 @@
 </div>
 
 
-<h1>Listes des promos ({{ classes|length }}) <a href="{% url 'class_create' %}" class="btn btn-success" >Créer</a></h1>
+<h1>Listes des promos ({{ classes|length }}) <a href="{% url 'class_create' %}" class="btn btn-success">Créer</a></h1>
 
 
 <table class="table">
@@ -34,14 +34,14 @@
         <tr>
             <th>{{class.name}}</th>
             <td>{{class.year}}</td>
-            {% if request.user|has_group:"cordinator" %}
+            {% if request.user|has_group:"coordinator" %}
             <td>
                 <a href="{% url 'class_get' id=class.id %}" class="btn btn-info">Voir</a>
                 <a href="{% url 'class_update' id=class.id %}" class="btn btn-success">Editer</a>
                 <a href="{% url 'class_delete' id=class.id %}" class="btn btn-danger">Supprimer</a>
             </td>
             {% elif request.user|has_group:"professor" %}
-             <td><a href="{% url 'class_get' id=class.id %}" class="btn btn-info">Voir</a></td>
+            <td><a href="{% url 'class_get' id=class.id %}" class="btn btn-info">Voir</a></td>
             {% else %}
             {% endif%}
         </tr>
