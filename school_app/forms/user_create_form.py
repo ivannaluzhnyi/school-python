@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 class UserCreateForm(forms.ModelForm):
     class Meta():
         model = User
+        widgets = {
+            'password': forms.PasswordInput()
+        }
         exclude = ['username', 'is_staff', 'user_permissions', 'is_active', 'is_superuser', 'date_joined']  # ['created_by', ]
         fields = '__all__'  # ['name', 'language']
 

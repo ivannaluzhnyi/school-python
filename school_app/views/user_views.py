@@ -35,6 +35,7 @@ def update_profile_view(request):
     return render(request, 'pages/profil/edit.html', {
         'form': form,
     })
+
 def upload(request):
     if request.method == 'POST':
         print('file', request.FILES)
@@ -47,7 +48,6 @@ def upload(request):
             io_string = io.StringIO(data_set)
             next(io_string)
             for column in csv.reader(io_string, delimiter=';', quotechar="|"):
-                user = User.objects.create_user(column[0], 'lennon@thebeatles.com', column[3])
                 user = User.objects.create_user(
                     {
                         "username":column[0],
@@ -75,10 +75,12 @@ def create_view(request):
         form = UserCreateForm(request.POST)
         if form.is_valid():
             data = request.POST.dict()
-            form.clean()
-            user = form.save()
+            user = form.clean()
+            new_user = User.objects.create_user(user.get('first_name')[0] + user.get('last_name'), None, user.get('password'), first_name=user.get('first_name'), last_name=user.get('last_name'))
+            new_user.groups.set(user.get('groups'))
+            new_user.save()
             messages.success(
-                request, "L'utilisateur {} à bien été créé.".format(user.username))
+                request, "L'utilisateur {} à bien été créé.".format(new_user.username))
         else:
             messages.error(
                 request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
