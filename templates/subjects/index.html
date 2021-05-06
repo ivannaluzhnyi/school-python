@@ -1,7 +1,6 @@
 {% extends '_base.html' %} {% load static %} {% block content %}
-{% if subjects %}
 <h1>Listes des matières ({{ subjects|length }}) <a href="{% url 'subject_create' %}" class="btn btn-success" >Créer</a></h1>
-
+{% if subjects %}
 {% if messages %}
             <div class="messages m-3">
                 {% for message in messages %}
@@ -17,6 +16,7 @@
       <th scope="col">#</th>
       <th scope="col">Matière</th>
       <th scope="col">Description</th>
+      <th scope="col">Professeur</th>
       <th scope="col4">Actions</th>
     </tr>
   </thead>
@@ -26,6 +26,7 @@
       <th scope="row">{{ forloop.counter }}</th>
       <td>{{subject.name}}</td>
       <td>{{subject.description}}</td>
+      <td> {{ subject.user}}</td>
       <td>
         <a href="{% url 'subject_update' subject.id %}" class="btn btn-primary btn-sm" >Modifier</a>
         {% comment %} <a href="{% url 'subject_update' subject.id %}" class="btn btn-success btn-sm" >Modifier</a> {% endcomment %}
@@ -36,5 +37,5 @@
   </tbody>
 </table>
 {% else %}
-<p>Y'a pas de matière.</p>
+<p>Il n'y a pas encore de matière.</p>
 {% endif %} {% endblock content %}
