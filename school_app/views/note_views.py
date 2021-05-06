@@ -6,12 +6,13 @@ from django.http import HttpResponse
 from django.contrib import messages
 from ..models import Note as NoteModel
 from ..forms.note_form import NoteForm
-
+from django.contrib.auth.decorators import login_required
+@login_required
 def get(request, id):
     _note = get_object_or_404(NoteModel, id=id)
     return HttpResponse(_class)
 
-
+@login_required
 def get_all(request):
     _notes = NoteModel.objects.all().order_by('id')
     user = request.user
@@ -25,12 +26,12 @@ def get_all(request):
     return render(request, "pages/notes/index.html", { "notes": _notes, "role": role })
 
 
-
+@login_required
 @csrf_exempt
 def create(request):
     return HttpResponse(request)
 
-
+@login_required
 def update_view(request, note_id):
     _note = NoteModel.objects.get(pk=note_id)
     if request.method == 'POST':
@@ -52,7 +53,7 @@ def update_view(request, note_id):
 
 
 
-
+@login_required
 @csrf_exempt
 def delete(request, note_id):
     NoteModel.objects.filter(pk=note_id).delete()

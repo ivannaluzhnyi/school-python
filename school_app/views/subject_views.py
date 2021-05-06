@@ -10,20 +10,23 @@ from ..forms.subject_form import SubjectForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required, permission_required
 
+@login_required
 def get(request, id):
     subject = get_object_or_404(SubjectModel, id=id)
     return render(request, 'subjects/index.html', {'subject': subject})
 
-# @login_required
+
 # @permission_required('school_app.subject.Canviewsubject', raise_exception=True)
+@login_required
 def get_all(request):
-    # print(request.user.is_authenticated())
-    # print(request.user.user_permissions.all())
-    print(request.user.groups.all())
-    subjects = SubjectModel.objects.all().order_by('id')
+    if request.user.groups.filter(name='cordinator'):
+        subjects = SubjectModel.objects.all().order_by('id')
+    elif request.user.groups.filter(name='professor'):
+        subjects = SubjectModel.objects.filter(user=2)
     return render(request, 'subjects/index.html', {'subjects': subjects})
 
 # @permission_required('polls.add_choice', raise_exception=True)
+@login_required
 def create(request):
 
     if request.method == 'POST':
@@ -48,6 +51,7 @@ def create(request):
 
 
 @csrf_exempt
+@login_required
 def update(request, id):
     subject = get_object_or_404(SubjectModel, id=id)
     if request.method == 'POST':
@@ -69,7 +73,7 @@ def update(request, id):
     }
     return render(request, 'subjects/form.html', context)
 
-
+@login_required
 def delete(request, id):
     SubjectModel.objects.filter(pk=id).delete()
     messages.success(request, "La matière à bien été surprimée.")

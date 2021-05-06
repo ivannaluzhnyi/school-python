@@ -7,13 +7,15 @@ from django.http import HttpResponse
 from ..models import Class as ClassModel
 from django.contrib import messages
 from ..forms.class_form import ClassForm
-
-
+from django.contrib.auth.decorators import login_required, permission_required
+@login_required
 def get(request, id):
     _class = get_object_or_404(ClassModel, id=id)
     return render(request, "pages/classes/read.html", {"class": _class})
 
 
+
+@login_required
 def get_all(request):
 
     _classes = ClassModel.objects.prefetch_related(
@@ -30,7 +32,11 @@ def get_all(request):
 
     return render(request, "pages/classes/index.html", {"classes": _classes, "role": role})
 
+def get_all_filter_by_subject(request, id):
+    _classes = ClassModel.objects.filter(subject=id)
+    return render(request, "pages/classes/index.html", {"classes": _classes, "role":"manager"})
 
+@login_required
 @csrf_exempt
 def create(request):
 
@@ -54,7 +60,7 @@ def create(request):
     }
     return render(request, 'pages/classes/manage.html', context)
 
-
+@login_required
 @csrf_exempt
 def update(request, id):
     _class = ClassModel.objects.get(pk=id)
@@ -76,7 +82,7 @@ def update(request, id):
         "title": "Mettre à jour une classe"
     })
 
-
+@login_required
 @csrf_exempt
 def delete(request, id):
     ClassModel.objects.filter(pk=id).delete()
