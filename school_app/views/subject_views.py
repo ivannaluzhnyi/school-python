@@ -4,7 +4,7 @@ from django.shortcuts import (get_object_or_404,
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from ..models import Subject as SubjectModel
-from ..models import Subject as SubjectModel
+from ..models import User as UserModel
 from django.contrib import messages
 from ..forms.subject_form import SubjectForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView

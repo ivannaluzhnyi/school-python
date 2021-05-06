@@ -8,7 +8,7 @@
         <div class="card-body">Editer mon profil</div>
       </a>
     </div>
-{% if request.user|has_group:"coordinator" %}
+{% comment %} {% if request.user|has_group:"coordinator" %} {% endcomment %}
 <h1>Panel Coordinateur</h1>
 <div class="container" style="margin-top: 10%">
   <div class="row justify-content-between">
@@ -30,7 +30,7 @@
 </div>
 </div>
     
-{% elif request.user|has_group:"professor" %}
+{% comment %} {% elif request.user|has_group:"professor" %} {% endcomment %}
 <h1>Panel Professeur</h1>
   <div class="container" style="margin-top: 10%">
     <div class="row justify-content-between">
@@ -41,7 +41,7 @@
       </div>
     </div>
   </div>
-{% else %}
+{% comment %} {% else %} {% endcomment %}
 <h1>Panel Etudiant</h1>
     <div class="container" style="margin-top: 10%">
       <div class="row justify-content-between">
@@ -57,5 +57,5 @@
     </div>
     </div>
   </div>
-{% endif %}
+{% comment %} {% endif %} {% endcomment %}
 {% endblock content %}
