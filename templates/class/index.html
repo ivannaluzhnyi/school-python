@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+
+{% block title %}Voir les promos{% endblock title %}
+{% block header %}
+<a href="{% url 'index' %}" class="btn btn-primary">Retour</a>
+{% endblock %}
+{% block content %}
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Matière</th>
+            <th scope="col">Année</th>
+            {% if role == 'manager' %}
+            <th scope="col2">Actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for class in classes %}
+        <tr>
+            <th>{{class.name}}</th>
+            <td>{{class.year}}</td>
+            {% if role == 'manager' %}
+            <td>
+                <a href="{% url 'class_get' id=class.id %}" class="btn btn-info">Voir</a>
+                <a href="{% url 'class_update' id=class.id %}" class="btn btn-success">Editer</a>
+                <a href="{% url 'class_delete' id=class.id %}" class="btn btn-danger">Supprimer</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+{% endblock content %}

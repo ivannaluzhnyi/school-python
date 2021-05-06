@@ -11,12 +11,24 @@ from ..forms.class_form import ClassForm
 
 def get(request, id):
     _class = get_object_or_404(ClassModel, id=id)
-    return HttpResponse(_class)
+    return render(request, "class/read.html", {"class": _class})
 
 
 def get_all(request):
-    _class = ClassModel.objects.all()
-    return HttpResponse(_class)
+
+    _classes = ClassModel.objects.prefetch_related(
+        "subject").prefetch_related("user").all()
+
+    user = request.user
+    groups = list()
+    for g in user.groups.all():
+        groups.append(g)
+
+    if "professor" in groups or "coordinator" in groups:
+        role = "manager"
+    role = "manager"
+
+    return render(request, "class/index.html", {"classes": _classes, "role": role})
 
 
 @csrf_exempt
