@@ -28,7 +28,7 @@
         <tr>
             <th>{{user.username}}</th>
             {% if user|has_group:"coordinator" %}
-            <td>"Coordinateur"</td>
+            <td>Coordinateur</td>
             <td></td>
             {% elif user|has_group:"professor" %}
             <td>Professeur</td>
@@ -40,8 +40,8 @@
 
             {% if request.user|has_group:"coordinator" %}
             <td>
-                <a href="#" class="btn btn-success">Editer</a>
-                <a href="#" class="btn btn-danger">Supprimer</a>
+                <a href="{% url 'update_users' user_id=user.id %}" class="btn btn-success">Editer</a>
+                <a href="{% url 'delete_users' user_id=user.id %}" class="btn btn-danger">Supprimer</a>
             </td>
             {% endif %}
         </tr>
@@ -50,7 +50,7 @@
 </table>
 <div class="container">
     <div class="row float-right">
-        <a href="{% url 'create_user' %}" class="btn btn-primary">
+        <a href="{% url 'create_users' %}" class="btn btn-primary">
             Créér un utilisateur
         </a>
     </div>

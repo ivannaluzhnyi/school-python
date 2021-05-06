@@ -17,7 +17,7 @@
             <th scope="col">Matière</th>
             <th scope="col">Note</th>
             <th scope="col">Coeff</th>
-            {% if role == 'manager' %}
+            {% if request.user|has_group:"coordinator" or if request.user|has_group:"professor" %}
             <th scope="col2">Actions</th>
             {% endif %}
         </tr>
@@ -28,7 +28,7 @@
             <th>{{note.subject}}</th>
             <td>{{note.note}}</td>
             <td>3</td>
-            {% if role == 'manager' %}
+            {% if request.user|has_group:"coordinator" or if request.user|has_group:"professor" %}
             <td>
                 <a href="{% url 'update_note' note_id=note.id %}" class="btn btn-success">Editer</a>
                 <a href="{% url 'delete_note' note_id=note.id %}" class="btn btn-danger">Supprimer</a>
@@ -38,6 +38,7 @@
         {% endfor %}
     </tbody>
 </table>
+{% if request.user|has_group:"coordinator" or if request.user|has_group:"professor" %}
 <div class="container">
     <div class="row float-right">
         <a href="{% url 'create_note' %}" class="btn btn-primary">
@@ -45,4 +46,6 @@
         </a>
     </div>
 </div>
+{% endif %}
+
 {% endblock content %}

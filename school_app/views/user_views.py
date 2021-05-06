@@ -2,7 +2,8 @@ from django.shortcuts import (get_object_or_404,
                               render,
                               redirect)
 from ..forms.profile_form import ProfilForm
-from ..forms.user_form import UserForm
+from ..forms.user_create_form import UserCreateForm
+from ..forms.user_update_form import UserUpdateForm
 from django.contrib import messages
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required, permission_required
@@ -34,20 +35,48 @@ def update_profile_view(request):
 
 def create_view(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = UserCreateForm(request.POST)
         if form.is_valid():
             data = request.POST.dict()
-            note = form.save()
+            form.clean()
+            user = form.save()
             messages.success(
-                request, "La note {} à bien été créée pour l'utilisateur {}".format(data['note'], note.user.username))
+                request, "L'utilisateur {} à bien été créé.".format(user.username))
         else:
             messages.error(
                 request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
     else:
 
-        form = UserForm()
+        form = UserCreateForm()
 
-    return render(request, 'pages/notes/manage.html', {
+    return render(request, 'pages/users/manage.html', {
         'form': form,
-        'mode': 'C'
+        'mode' : 'C'
     })
+
+def update_view(request, user_id):
+    _user = get_object_or_404(User, id=user_id)
+
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=_user)
+        if form.is_valid():
+            data = request.POST.dict()
+            note = form.save()
+            messages.success(
+                request, "L'utilisateur {} à bien été modifié {}".format(data['username']))
+        else:
+            messages.error(
+                request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
+    else:
+
+        form = UserUpdateForm(instance=_user)
+
+    return render(request, 'pages/users/manage.html', {
+        'form': form,
+        'mode' : 'U'
+    })
+
+def delete(request, user_id):
+    User.objects.filter(pk=user_id).delete()
+    messages.success(request, "L'utilisateur à bien été supprimé).")
+    return redirect('index_users')
