@@ -40,11 +40,10 @@ def create(request):
                 request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
     else:
 
-        form = NoteForm()
+        form = NoteForm(user_id=request.user.id)
 
     return render(request, 'pages/notes/manage.html', {
-        'form': form,
-        'mode': 'C'
+        'form': form
     })
 
 @login_required
@@ -63,8 +62,7 @@ def update_view(request, note_id):
     else:
         form = NoteForm(instance=_note)
     return render(request, 'pages/notes/manage.html', {
-        'form': form,
-        'mode': "U"
+        'form': form
     })
 
 
