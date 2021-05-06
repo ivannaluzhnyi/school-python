@@ -35,7 +35,7 @@ def get_all(request):
 def create(request):
 
     if request.method == 'POST':
-        form = ClassForm(request.POST)
+        form = ClassForm(request.POST, request.FILES)
         if form.is_valid():
             data = request.POST.dict()
             form.save()
@@ -58,8 +58,13 @@ def create(request):
 @csrf_exempt
 def update(request, id):
     _class = ClassModel.objects.get(pk=id)
+
+    print('-------------------------')
+
+    print(request.FILES)
+
     if request.method == 'POST':
-        form = ClassForm(request.POST)
+        form = ClassForm(request.POST, files=request.FILES, instance=_class)
         if form.is_valid():
             data = request.POST.dict()
             form.save()

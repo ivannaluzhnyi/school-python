@@ -3,6 +3,9 @@ from django.urls import path, include
 from . import views
 from .views import index_views, subject_views, class_views, note_views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('', index_views.HomePageView.as_view(), name='index'),
     path('accounts/', include('django.contrib.auth.urls'),),
@@ -27,3 +30,9 @@ urlpatterns = [
     path('notes/update/<int:note_id>', note_views.update_view, name="update_note"),
     path('notes/delete/<int:note_id>', note_views.delete, name="delete_note")
 ]
+
+
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

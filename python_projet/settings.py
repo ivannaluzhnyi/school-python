@@ -140,3 +140,7 @@ STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
 STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

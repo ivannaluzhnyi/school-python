@@ -1,8 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
 
 
 from helpers import form_validator
+
+
+def upload_path_handler(instance, filename):
+    import os.path
+    fn, ext = os.path.splitext(filename)
+    return 'documents/classes%Y/%m/%d'
+    # return "documents/classes/{id}{ext}".format(id=instance.pk, ext=ext)
 
 
 class Subject(models.Model):
@@ -19,6 +27,8 @@ class Class(models.Model):
     subject = models.ManyToManyField(Subject)
     user = models.ManyToManyField(User)
     year = models.IntegerField(validators=[form_validator.validate_year_class])
+    doc = models.FileField(upload_to=upload_path_handler,
+                           null=True, blank=True)
 
     def __str__(self):
         # print("------------------------------")
