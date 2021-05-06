@@ -16,7 +16,7 @@ urlpatterns = [
     path('/subject/delete/<int:id>', subject_views.delete, name='subject_delete'),
 
     # Class
-    path('/class', class_views.get_all, name='subject_get_all'),
+    path('/class/', class_views.get_all, name='class_get_all'),
     path('/class/<int:id>', class_views.get, name='class_get'),
     path('/class/create', class_views.create, name='class_create'),
     path('/class/update/<int:id>', class_views.update, name='class_update'),

@@ -19,6 +19,16 @@ services:
       - '8000:8000'
     depends_on:
       - db
+
+  adminer:
+    container_name: adminer
+    image: adminer:latest
+    restart: always
+    environment:
+      ADMINER_PLUGINS: tables-filter tinymce
+      ADMINER_DESIGN: pepa-linha
+    ports:
+      - 8080:8080
 volumes:
     pgdata:
         external: true
