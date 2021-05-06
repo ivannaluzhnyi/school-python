@@ -80,4 +80,5 @@ def update(request, id):
 @csrf_exempt
 def delete(request, id):
     ClassModel.objects.filter(pk=id).delete()
+    messages.success(request, "La classe à bien été surprimée.")
     return redirect('class_get_all')
