@@ -7,3 +7,7 @@ class ProfilForm(forms.ModelForm):
         model = User
         fields = ['username']  # ['name', 'language']
         exclude = ()  # ['created_by', ]
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
+
