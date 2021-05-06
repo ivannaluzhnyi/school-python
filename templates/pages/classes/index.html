@@ -5,6 +5,20 @@
 <a href="{% url 'index' %}" class="btn btn-primary">Retour</a>
 {% endblock %}
 {% block content %}
+
+<div class="messages m-3">
+    {% for message in messages %}
+    <div
+        class="alert  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}: alert-danger {% else %} alert-success {%  endif %} ">
+        <div {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<h1>Listes des promos ({{ classes|length }}) <a href="{% url 'class_create' %}" class="btn btn-success" >Créer</a></h1>
+
+
 <table class="table">
     <thead class="thead-light">
         <tr>
