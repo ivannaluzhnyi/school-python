@@ -4,6 +4,7 @@
 {% block title %}Voir les notes{% endblock title %}
 {% block header %}
 <a href="{% url 'index' %}" class="btn btn-primary">Retour</a>
+ <a href="{% url 'upload_users' %}" class="btn btn-success">upload csv</a>
 {% endblock %}
 {% block content %}
 {% for message in messages %}
