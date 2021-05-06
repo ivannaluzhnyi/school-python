@@ -16,20 +16,14 @@ def get(request, id):
 def get_all(request):
     _notes = NoteModel.objects.all().order_by('id')
     user = request.user
-    groups = list()
-    for g in user.groups.all():
-        groups.append(g)
 
-    if "professor" in groups or "coordinator" in groups:
-        role = "manager"
-    role = "manager"
-    return render(request, "pages/notes/index.html", { "notes": _notes, "role": role })
+    return render(request, "pages/notes/index.html", { "notes": _notes })
 
 
 @login_required
 def create(request):
     if request.method == 'POST':
-        form = NoteForm(request.POST)
+        form = NoteForm(request.POST, user_id=request.user.id)
         if form.is_valid():
             data = request.POST.dict()
             note = form.save()
@@ -50,17 +44,17 @@ def create(request):
 def update_view(request, note_id):
     _note = NoteModel.objects.get(pk=note_id)
     if request.method == 'POST':
-        form = NoteForm(request.POST, instance=_note)
+        form = NoteForm(request.POST, instance=_note, user_id=request.user.id)
         if form.is_valid():
             data = request.POST.dict()
-            form.save()
+            note = form.save()
             messages.success(
-                request, "La note {} à bien été modifiée".format(data['id']))
+                request, "La note {} à bien été modifiée".format(note.id))
         else:
             messages.error(
                 request, 'Il y a des erreurs dans le formulaire, veuillez vérifier')
     else:
-        form = NoteForm(instance=_note)
+        form = NoteForm(instance=_note, user_id=request.user.id)
     return render(request, 'pages/notes/manage.html', {
         'form': form
     })
