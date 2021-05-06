@@ -1,7 +1,6 @@
 {% extends '_base.html' %} {% load static %} {% block content %}
-{% if subjects %}
 <h1>Listes des matières ({{ subjects|length }}) <a href="{% url 'subject_create' %}" class="btn btn-success" >Créer</a></h1>
-
+{% if subjects %}
 {% if messages %}
             <div class="messages m-3">
                 {% for message in messages %}
@@ -36,5 +35,5 @@
   </tbody>
 </table>
 {% else %}
-<p>Y'a pas de matière.</p>
+<p>Il n'y a pas encore de matière.</p>
 {% endif %} {% endblock content %}
