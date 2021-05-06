@@ -26,19 +26,15 @@ def get(request, id):
 @login_required
 def get_all(request):
 
-    _classes = ClassModel.objects.prefetch_related(
-        "subject").prefetch_related("user").all()
+    print(request.user.groups.filter(name='coordinator').exists())
+    print(request.user.groups.filter(name='professor').exists())
+    if request.user.groups.filter(name='coordinator').exists() or request.user.groups.filter(name='professor').exists():
+        _classes = ClassModel.objects.all()
+    else:
+        _classes = ClassModel.objects.filter(user=request.user.id)
 
-    user = request.user
-    groups = list()
-    for g in user.groups.all():
-        groups.append(g)
 
-    if "professor" in groups or "coordinator" in groups:
-        role = "manager"
-    role = "manager"
-
-    return render(request, "pages/classes/index.html", {"classes": _classes, "role": role})
+    return render(request, "pages/classes/index.html", {"classes": _classes})
 
 
 def get_all_filter_by_subject(request, id):

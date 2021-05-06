@@ -16,7 +16,11 @@
 </div>
 
 
-<h1>Listes des promos ({{ classes|length }}) <a href="{% url 'class_create' %}" class="btn btn-success">Créer</a></h1>
+<h1>Listes des promos ({{ classes|length }})
+    {% if request.user|has_group:"coordinator" %}
+    <a href="{% url 'class_create' %}" class="btn btn-success">Créer</a>
+    {%endif%}
+</h1>
 
 
 <table class="table">
@@ -24,9 +28,7 @@
         <tr>
             <th scope="col">Classe</th>
             <th scope="col">Année</th>
-            {% if role == 'manager' %}
             <th scope="col2">Actions</th>
-            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -40,9 +42,8 @@
                 <a href="{% url 'class_update' id=class.id %}" class="btn btn-success">Editer</a>
                 <a href="{% url 'class_delete' id=class.id %}" class="btn btn-danger">Supprimer</a>
             </td>
-            {% elif request.user|has_group:"professor" %}
-            <td><a href="{% url 'class_get' id=class.id %}" class="btn btn-info">Voir</a></td>
             {% else %}
+            <td><a href="{% url 'class_get' id=class.id %}" class="btn btn-info">Voir</a></td>
             {% endif%}
         </tr>
         {% endfor %}
